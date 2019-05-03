@@ -8,12 +8,7 @@ namespace AddressAnalyzer.Api
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        public IConfiguration Configuration { get; }
+        public IConfiguration Configuration { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -37,6 +32,13 @@ namespace AddressAnalyzer.Api
             app.UseHttpsRedirection();
             app.UseMvc();
             app.UseApiVersioning();
+
+            ConfigurationBuilder builder = new ConfigurationBuilder();
+            builder.SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddEnvironmentVariables();
+
+            Configuration = builder.Build();
         }
     }
 }

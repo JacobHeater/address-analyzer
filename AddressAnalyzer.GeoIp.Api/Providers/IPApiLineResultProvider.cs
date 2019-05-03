@@ -1,8 +1,10 @@
 ﻿using System;
+using AddressAnalyzer.Common.DataProviders;
+
 namespace AddressAnalyzer.GeoIp.Api.Providers
 {
-    internal class IpApiLineResultProvider : GeoIpProviderBase
+    public class IPApiLineResultProvider : DataProviderBase
     {
-        internal override string ProviderUrl => "http://ip-api.com/line";
+        public override string ProviderUrl => "http://ip-api.com/line";
     }
 }

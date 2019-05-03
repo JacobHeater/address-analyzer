@@ -12,6 +12,8 @@
     <Folder Include="Validation\" />
     <Folder Include="Extensions\" />
     <Folder Include="HttpClients\" />
+    <Folder Include="Workers\" />
+    <Folder Include="DataProviders\" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNetCore.Mvc.ViewFeatures">

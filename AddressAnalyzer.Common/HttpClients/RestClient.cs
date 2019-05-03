@@ -10,20 +10,18 @@ namespace AddressAnalyzer.Common.HttpClients
     {
         private readonly Client _restClient = new Client();
 
-        public async Task<string> GetAsync(string uri)
+        public async Task<string> GetAsync(Uri uri)
         {
             try
             {
-                IRestResponse response = await _restClient.ExecuteGetTaskAsync(new RestRequest(uri));
+                IRestResponse response = await _restClient.ExecuteGetTaskAsync(new RestRequest(uri.ToString()));
 
                 if (IsResponseValid(response))
                 {
                     return response.Content;
                 }
-                else
-                {
-                    return string.Empty;
-                }
+
+                return string.Empty;
             }
             catch (Exception)
             {

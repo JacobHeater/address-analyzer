@@ -13,7 +13,7 @@ namespace AddressAnalyzer.Common.Tests.HttpClients
         {
             RestClient client = new RestClient();
 
-            string json = await client.GetAsync("http://ip-api.com/line/google.com");
+            string json = await client.GetAsync(new Uri("http://ip-api.com/line/google.com"));
 
             Assert.IsFalse(string.IsNullOrWhiteSpace(json));
         }

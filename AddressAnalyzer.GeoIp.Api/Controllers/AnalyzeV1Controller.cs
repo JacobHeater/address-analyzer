@@ -18,9 +18,9 @@ namespace AddressAnalyzer.GeoIp.Api.Controllers
         {
             this.ValidateAddressInput(address);
 
-            GeoIpClient<IpApiLineResultProvider> client = new GeoIpClient<IpApiLineResultProvider>();
+            GeoIpLinesClient client = new GeoIpLinesClient();
 
-            string lines = await client.GetGeoIpResultAsync(address);
+            string lines = await client.GetDataAsync(address);
             bool isSuccess = true;
 
             if (string.IsNullOrWhiteSpace(lines))
