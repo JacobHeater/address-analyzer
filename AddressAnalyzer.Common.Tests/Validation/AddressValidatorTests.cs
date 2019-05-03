@@ -74,5 +74,35 @@ namespace AddressAnalyzer.Common.Tests.Validation
 
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void AddressValidatorReturnsIpAddressTypeWhenStringIsIpAddress()
+        {
+            string input = "8.8.8.8";
+            AddressType expected = AddressType.IPAddress;
+            AddressType actual = AddressValidator.GetAddressType(input);
+
+            Assert.AreEqual(expected, actual);
+
+            input = IPAddress.IPv6Loopback.ToString();
+            actual = AddressValidator.GetAddressType(input);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void AddressValidatorReturnsDomainWhenStringIsDomain()
+        {
+            string input = "google.com";
+            AddressType expected = AddressType.Domain;
+            AddressType actual = AddressValidator.GetAddressType(input);
+
+            Assert.AreEqual(expected, actual);
+
+            input = "http://google.com";
+            actual = AddressValidator.GetAddressType(input);
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

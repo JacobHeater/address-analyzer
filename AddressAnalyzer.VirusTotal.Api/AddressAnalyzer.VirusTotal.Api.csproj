@@ -8,8 +8,8 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,9 +17,9 @@
     <Folder Include="Providers\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AddressAnalyzer.Common\AddressAnalyzer.Common.csproj" />
+    <Compile Remove="Controllers\ValuesController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Providers\GeoIpProviderBase.cs" />
+    <ProjectReference Include="..\AddressAnalyzer.Common\AddressAnalyzer.Common.csproj" />
   </ItemGroup>
 </Project>

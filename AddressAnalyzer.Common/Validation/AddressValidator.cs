@@ -17,25 +17,30 @@ namespace AddressAnalyzer.Common.Validation
         /// <param name="address">Address to validate.</param>
         public static bool IsAddressValid(string address)
         {
+            return GetAddressType(address) != AddressType.Unknown;
+        }
+
+        public static AddressType GetAddressType(string address)
+        {
             if (string.IsNullOrWhiteSpace(address))
             {
-                return false;
+                return AddressType.Unknown;
             }
 
-            bool isValid;
+            AddressType addressType = AddressType.Unknown;
 
             // Try URI validation first.
             try
             {
                 _ = new Uri(address);
-                isValid = true;
+                addressType = AddressType.Domain;
             }
             catch (Exception)
             {
-                isValid = false;
+                addressType = AddressType.Unknown;
             }
 
-            if (!isValid)
+            if (addressType == AddressType.Unknown)
             {
                 try
                 {
@@ -45,21 +50,21 @@ namespace AddressAnalyzer.Common.Validation
                     {
                         if (uri.ToString().ToLower() != address.ToLower())
                         {
-                            isValid = false;
+                            addressType = AddressType.Unknown;
                         }
                     }
                     else
                     {
-                        isValid = true;
+                        addressType = AddressType.Domain;
                     }
                 }
                 catch (Exception)
                 {
-                    isValid = false;
+                    addressType = AddressType.Unknown;
                 }
             }
 
-            if (!isValid)
+            if (addressType == AddressType.Unknown)
             {
                 // Try IP v4/v6 validation
                 try
@@ -74,20 +79,20 @@ namespace AddressAnalyzer.Common.Validation
 
                     if (addr.ToString().ToLower() == address.ToLower())
                     {
-                        isValid = true;
+                        addressType = AddressType.IPAddress;
                     }
                     else
                     {
-                        isValid = false;
+                        addressType = AddressType.Unknown;
                     }
                 }
                 catch (Exception)
                 {
-                    isValid = false;
+                    addressType = AddressType.Unknown;
                 }
             }
 
-            return isValid;
+            return addressType;
         }
     }
 }

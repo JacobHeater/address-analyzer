@@ -11,6 +11,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddressAnalyzer.GeoIp.Api",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddressAnalyzer.GeoIp.Api.Tests", "AddressAnalyzer.GeoIp.Api.Tests\AddressAnalyzer.GeoIp.Api.Tests.csproj", "{8E520E37-594B-4BCC-8F0F-70203EE59824}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddressAnalyzer.Rdap.Api", "AddressAnalyzer.Rdap.Api\AddressAnalyzer.Rdap.Api.csproj", "{BCEF130C-11BD-45E4-BE4C-F88279DB4CA0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddressAnalyzer.Ping.Api", "AddressAnalyzer.Ping.Api\AddressAnalyzer.Ping.Api.csproj", "{64C2720B-5823-4EFE-998B-F8171B465BDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddressAnalyzer.ReverseDns.Api", "AddressAnalyzer.ReverseDns.Api\AddressAnalyzer.ReverseDns.Api.csproj", "{DA45EB0A-075D-405C-A5B0-4D6CE38953BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddressAnalyzer.VirusTotal.Api", "AddressAnalyzer.VirusTotal.Api\AddressAnalyzer.VirusTotal.Api.csproj", "{9974F344-DFCA-41EE-922C-AE7A61AFA39B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,5 +45,21 @@ Global
 		{8E520E37-594B-4BCC-8F0F-70203EE59824}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E520E37-594B-4BCC-8F0F-70203EE59824}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E520E37-594B-4BCC-8F0F-70203EE59824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCEF130C-11BD-45E4-BE4C-F88279DB4CA0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCEF130C-11BD-45E4-BE4C-F88279DB4CA0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCEF130C-11BD-45E4-BE4C-F88279DB4CA0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCEF130C-11BD-45E4-BE4C-F88279DB4CA0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64C2720B-5823-4EFE-998B-F8171B465BDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64C2720B-5823-4EFE-998B-F8171B465BDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64C2720B-5823-4EFE-998B-F8171B465BDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64C2720B-5823-4EFE-998B-F8171B465BDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA45EB0A-075D-405C-A5B0-4D6CE38953BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA45EB0A-075D-405C-A5B0-4D6CE38953BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA45EB0A-075D-405C-A5B0-4D6CE38953BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA45EB0A-075D-405C-A5B0-4D6CE38953BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9974F344-DFCA-41EE-922C-AE7A61AFA39B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9974F344-DFCA-41EE-922C-AE7A61AFA39B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9974F344-DFCA-41EE-922C-AE7A61AFA39B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9974F344-DFCA-41EE-922C-AE7A61AFA39B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

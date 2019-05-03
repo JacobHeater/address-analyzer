@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AddressAnalyzer.Common.DataContracts;
 using AddressAnalyzer.Common.HttpClients;
 using Newtonsoft.Json;
 
 namespace AddressAnalyzer.Common.Workers
 {
-    public abstract class AnalysisWorkerBase<T> where T : class, new()
+    public abstract class AnalysisWorkerBase<T> where T : ServiceAnalysisResultBase, new()
     {
         protected AnalysisWorkerBase(Uri sourceUrl)
         {
@@ -17,14 +18,19 @@ namespace AddressAnalyzer.Common.Workers
 
         public async Task<T> FetchDataAsync()
         {
-            string json = await _restClient.GetAsync(SourceUrl);
+            string apiResult = await _restClient.GetAsync(SourceUrl);
 
-            if (string.IsNullOrWhiteSpace(json))
+            if (string.IsNullOrWhiteSpace(apiResult))
             {
-                return null;
+                ServiceAnalysisResultBase result = (ServiceAnalysisResultBase)Activator.CreateInstance<T>();
+
+                result.IsSuccessful = false;
+                result.ResultText = string.Empty;
+
+                return result as T;
             }
 
-            return JsonConvert.DeserializeObject<T>(json);
+            return JsonConvert.DeserializeObject<T>(apiResult);
         }
     }
 }

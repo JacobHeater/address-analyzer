@@ -1,10 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System.Net;
+using System.Threading.Tasks;
+using System.Web.Http;
 using AddressAnalyzer.Common.DataContracts;
+using AddressAnalyzer.Common.DataProviders;
 using AddressAnalyzer.Common.Extensions;
 using AddressAnalyzer.GeoIp.Api.Providers;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AddressAnalyzer.GeoIp.Api.Controllers
 {
@@ -13,26 +15,43 @@ namespace AddressAnalyzer.GeoIp.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public class AnalyzeV1Controller : Controller
     {
-        [HttpGet("{address}")]
-        public async Task<GeoIpAnalysisResult> Get(string address)
+        [HttpGet("{format}/{address}")]
+        public async Task<GeoIpAnalysisResult> Get(string format, string address)
         {
             this.ValidateAddressInput(address);
 
-            GeoIpLinesClient client = new GeoIpLinesClient();
-
-            string lines = await client.GetDataAsync(address);
-            bool isSuccess = true;
-
-            if (string.IsNullOrWhiteSpace(lines))
+            if (string.IsNullOrWhiteSpace(format))
             {
-                isSuccess = false;
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
+            IDataClient client;
+
+            switch (format.ToLower())
+            {
+                case "json":
+                    client = new GeoIpClient<IPApiJsonDataProvider>();
+                    break;
+                case "line":
+                default:
+                    client = new GeoIpClient<IPApiLineDataProvider>();
+                    break;
+            }
+
+            string data = await client.GetDataAsync(address);
+            bool isSuccessful = !string.IsNullOrWhiteSpace(data);
+            
             return new GeoIpAnalysisResult
             {
-                IsSuccessful = isSuccess,
-                ResultText = lines
+                IsSuccessful = isSuccessful,
+                ResultText = data
             };
+        }
+
+        [HttpGet("{address}")]
+        public Task<GeoIpAnalysisResult> Get(string address)
+        {
+            return Get("line", address);
         }
     }
 }
