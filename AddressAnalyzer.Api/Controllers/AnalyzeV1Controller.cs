@@ -28,14 +28,46 @@ namespace AddressAnalyzer.Api.Controllers
         {
             this.ValidateAddressInput(address);
 
-            return new AnalysisResult
+            return await Get("ping,geo,rdap", address);
+        }
+
+        [HttpGet("{servicelist}/{address}")]
+        public async Task<AnalysisResult> Get(string servicelist, string address)
+        {
+            this.ValidateAddressInput(address);
+
+            if (string.IsNullOrWhiteSpace(servicelist))
             {
-                GeoIp = await GetGeoIpDataAsync(address),
-                Ping = await GetPingDataAsync(address),
-                ReverseDns = await GetReverseDnsDataAsync(address),
-                VirusTotal = await GetVirusTotalDataAsync(address),
-                Rdap = await GetRdapDataAsync(address)
-            };
+                throw new HttpResponseException(HttpStatusCode.BadRequest);
+            }
+
+            string[] servicesToQuery = servicelist.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            AnalysisResult result = new AnalysisResult();
+
+            foreach (string service in servicesToQuery)
+            {
+                switch(service)
+                {
+                    case "vt":
+                        result.VirusTotal = await GetVirusTotalDataAsync(address);
+                        break;
+                    case "rdap":
+                        result.Rdap = await GetRdapDataAsync(address);
+                        break;
+                    case "rdns":
+                        result.ReverseDns = await GetReverseDnsDataAsync(address);
+                        break;
+                    case "ping":
+                        result.Ping = await GetPingDataAsync(address);
+                        break;
+                    case "geo":
+                        result.GeoIp = await GetGeoIpDataAsync(address);
+                        break;
+                }
+            }
+
+            return result;
         }
 
         private async Task<GeoIpAnalysisResult> GetGeoIpDataAsync(string address)
@@ -100,7 +132,7 @@ namespace AddressAnalyzer.Api.Controllers
                     throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
-            Uri rdapAnalyzeRoute = new Uri($"{rdapApiUrl}/api/v1/{type}/{address}");
+            Uri rdapAnalyzeRoute = new Uri($"{rdapApiUrl}/api/v1/analyze/{type}/{address}");
             RdapWorker rdapWorker = new RdapWorker(rdapAnalyzeRoute);
             RdapAnalysisResult result = await rdapWorker.FetchDataAsync();
 
