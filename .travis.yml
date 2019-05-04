@@ -3,9 +3,7 @@ mono: none
 dotnet: 2.2
 sudo: required
 
-install:
-- dotnet restore
-
 script:
+ - dotnet restore
  - dotnet build
  - dotnet test
