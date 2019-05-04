@@ -25,6 +25,8 @@ There are a few endpoints that are of note.
 - `GET /api/v1/heartbeat` -> Returns a string
    indicating connectivity to the API.
 
+### Analyze
+
 - `GET /api/v1/analyze/{address}` -> Returns JSON from
    the default set of services.
 
