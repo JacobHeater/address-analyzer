@@ -13,14 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="UnitTest1.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Validation\" />
-    <Folder Include="HttpClients\" />
-    <Folder Include="DataProviders\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AddressAnalyzer.Common\AddressAnalyzer.Common.csproj" />
+    <ProjectReference Include="..\AddressAnalyzer.Rdap.Api\AddressAnalyzer.Rdap.Api.csproj" />
   </ItemGroup>
 </Project>

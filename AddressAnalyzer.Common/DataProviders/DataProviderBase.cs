@@ -12,11 +12,26 @@ namespace AddressAnalyzer.Common.DataProviders
 
         public Uri GetUrl(string path)
         {
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                throw new ArgumentException("Argument 'path' is required to have a value.", nameof(path));
+            }
+
+            if (string.IsNullOrWhiteSpace(ProviderUrl))
+            {
+                throw new EmptyProviderUrlException();
+            }
+
             return new Uri($"{ProviderUrl}/{path}");
         }
 
         public Uri GetUrl()
         {
+            if (string.IsNullOrWhiteSpace(ProviderUrl))
+            {
+                throw new EmptyProviderUrlException();
+            }
+
             return new Uri(ProviderUrl);
         }
 
