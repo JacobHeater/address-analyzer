@@ -56,6 +56,22 @@ There are a few endpoints that are of note.
   - Type `{string}` - IP Address or Domain
     - Example: `8.8.8.8` or `google.com`
 
+#### Analyze Notes
+
+When using the analyze endpoint, if you specify a
+service list, and you include Virus Total as one
+of the services you will query, then you must include
+your VT API key along with the request in the request
+headers.
+
+The request header name must be `X-VT-Key`.
+
+As an example:
+
+```shell
+X-VT-Key: <your api key here>
+```
+
 ## Running the App
 
 ### Prerequisites
