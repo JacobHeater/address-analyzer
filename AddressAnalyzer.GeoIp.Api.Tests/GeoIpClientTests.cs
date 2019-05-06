@@ -9,29 +9,6 @@ namespace AddressAnalyzer.GeoIp.Api.Tests
     public class GeoIpClientTests
     {
         [Test]
-        public async Task GeoIpClientReturnsDataWithNewLinesWhenLineProviderRequested()
-        {
-            GeoIpClient<IPApiLineDataProvider> client = new GeoIpClient<IPApiLineDataProvider>();
-            string data = await client.GetDataAsync("google.com");
-
-            Assert.IsFalse(string.IsNullOrWhiteSpace(data));
-            Assert.IsTrue(data.Contains("\n"));
-
-            try
-            {
-                // This should not pass, because
-                // what we get back is not JSON.
-                _ = JsonConvert.DeserializeObject(data);
-
-                Assert.Fail();
-            }
-            catch
-            {
-                Assert.IsTrue(true);
-            }
-        }
-
-        [Test]
         public async Task GeoIpClinetReturnsDataAsJsonWhenJsonProviderRequested()
         {
             GeoIpClient<IPApiJsonDataProvider> client = new GeoIpClient<IPApiJsonDataProvider>();

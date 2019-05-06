@@ -34,11 +34,11 @@ namespace AddressAnalyzer.GeoIp.Api.Controllers
                     break;
                 case "line":
                 default:
-                    client = new GeoIpClient<IPApiLineDataProvider>();
+                    client = new GeoIpClient<IPApiJsonDataProvider>();
                     break;
             }
 
-            string data = await client.GetDataAsync(address);
+            string data = await client.GetDataAsync($"{address}/json");
             bool isSuccessful = !string.IsNullOrWhiteSpace(data);
             
             return new GeoIpAnalysisResult
