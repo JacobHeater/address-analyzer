@@ -4,6 +4,11 @@ using System.Threading.Tasks;
 
 namespace AddressAnalyzer.Common.DataProviders
 {
+    /// <summary>
+    /// Uses the given data provider, as defined in the type
+    /// parameter, to retrieve data using the data provider.
+    /// </summary>
+    /// <typeparam name="TDataProvider">The type of data provider to use.</typeparam>
     public abstract class DataClientBase<TDataProvider> : IDataClient where TDataProvider : class, IDataProvider, new()
     {
         private TDataProvider _provider;
@@ -20,6 +25,12 @@ namespace AddressAnalyzer.Common.DataProviders
             }
         }
 
+        /// <summary>
+        /// Makes an HTTP GET call to the resource passing along
+        /// the address to query.
+        /// </summary>
+        /// <returns>The data from the request.</returns>
+        /// <param name="address">Address to query in the data provider.</param>
         public async Task<string> GetDataAsync(string address)
         {
             if (string.IsNullOrWhiteSpace(address))
@@ -33,6 +44,12 @@ namespace AddressAnalyzer.Common.DataProviders
             return result;
         }
 
+        /// <summary>
+        /// Makes an HTTP GET call to the resource passing, and
+        /// sends along the query string parameters.
+        /// </summary>
+        /// <returns>The data from the request.</returns>
+        /// <param name="parameters">Query string parameters.</param>
         public async Task<string> GetDataAsync(Dictionary<string, string> parameters)
         {
             if (parameters == null)
@@ -46,6 +63,13 @@ namespace AddressAnalyzer.Common.DataProviders
             return result;
         }
 
+        /// <summary>
+        /// Makes an HTTP POST call to the data provider, and
+        /// passes along the payload to the data provider.
+        /// </summary>
+        /// <returns>The data from the request.</returns>
+        /// <param name="payload">Payload to send with the request.</param>
+        /// <typeparam name="TData">The type of the payload.</typeparam>
         public async Task<string> PostDataAsync<TData>(TData payload) where TData : class, new()
         {
             if (payload == null)

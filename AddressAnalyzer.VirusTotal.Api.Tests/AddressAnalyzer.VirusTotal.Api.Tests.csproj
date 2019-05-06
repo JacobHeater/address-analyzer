@@ -10,19 +10,9 @@
     <PackageReference Include="nunit" Version="3.11.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="UnitTest1.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Validation\" />
-    <Folder Include="HttpClients\" />
-    <Folder Include="DataProviders\" />
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AddressAnalyzer.Common\AddressAnalyzer.Common.csproj" />
+    <ProjectReference Include="..\AddressAnalyzer.VirusTotal.Api\AddressAnalyzer.VirusTotal.Api.csproj" />
   </ItemGroup>
 </Project>

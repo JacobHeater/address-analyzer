@@ -8,10 +8,18 @@ using Client = RestSharp.RestClient;
 
 namespace AddressAnalyzer.Common.HttpClients
 {
+    /// <summary>
+    /// A REST client to communicate with RESTful APIs.
+    /// </summary>
     public class RestClient
     {
         private readonly Client _restClient = new Client();
 
+        /// <summary>
+        /// Makes an HTTP GET request to the given resource.
+        /// </summary>
+        /// <returns>The string content from the request.</returns>
+        /// <param name="uri">The resource to call.</param>
         public async Task<string> GetAsync(Uri uri)
         {
             if (uri == null)
@@ -36,6 +44,13 @@ namespace AddressAnalyzer.Common.HttpClients
             }
         }
 
+        /// <summary>
+        /// Makes an HTTP GET request with query string parameters
+        /// to the given resource.
+        /// </summary>
+        /// <returns>The string content from the request.</returns>
+        /// <param name="uri">The resouce to call.</param>
+        /// <param name="parameters">Query string parameters.</param>
         public async Task<string> GetAsync(Uri uri, Dictionary<string, string> parameters)
         {
             if (uri == null)
@@ -72,6 +87,14 @@ namespace AddressAnalyzer.Common.HttpClients
             }
         }
 
+        /// <summary>
+        /// Makes an HTTP POST request to the given resource,
+        /// and posts the payload as JSON.
+        /// </summary>
+        /// <returns>The data from the request.</returns>
+        /// <param name="uri">The resource to query.</param>
+        /// <param name="payload">The payload to send.</param>
+        /// <typeparam name="TData">The type of the payload.</typeparam>
         public async Task<string> PostAsync<TData>(Uri uri, TData payload) where TData : class, new()
         {
             if (uri == null)
@@ -108,6 +131,12 @@ namespace AddressAnalyzer.Common.HttpClients
             }
         }
 
+        /// <summary>
+        /// Checks to see if the response StatusCode
+        /// property is a 200 status code.
+        /// </summary>
+        /// <returns><c>true</c>, if response code was 200, <c>false</c> otherwise.</returns>
+        /// <param name="response">Response.</param>
         private bool IsResponseValid(IRestResponse response)
         {
             return response.StatusCode == HttpStatusCode.OK;

@@ -10,7 +10,7 @@ namespace AddressAnalyzer.Api.Controllers
         [HttpGet]
         public string Get()
         {
-            return $"Addresss Analyzer Api Version 1";
+            return $"Addresss Analyzer Aggregator Api Version 1";
         }
     }
 }

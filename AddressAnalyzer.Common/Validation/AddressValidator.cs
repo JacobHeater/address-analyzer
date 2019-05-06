@@ -20,6 +20,12 @@ namespace AddressAnalyzer.Common.Validation
             return GetAddressType(address) != AddressType.Unknown;
         }
 
+        /// <summary>
+        /// Gets the address type of the string by attempting
+        /// to parse out what type of address it is.
+        /// </summary>
+        /// <returns>The address type.</returns>
+        /// <param name="address">Address to check.</param>
         public static AddressType GetAddressType(string address)
         {
             if (string.IsNullOrWhiteSpace(address))

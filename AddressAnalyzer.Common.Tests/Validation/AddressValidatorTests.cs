@@ -104,5 +104,15 @@ namespace AddressAnalyzer.Common.Tests.Validation
 
             Assert.AreEqual(expected, actual);
         }
+
+        [Test]
+        public void AddressValidatorReturnsUnknownWhenInputStringIsInvalid()
+        {
+            string input = "!@#$%!@#$";
+            AddressType expected = AddressType.Unknown;
+            AddressType actual = AddressValidator.GetAddressType(input);
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

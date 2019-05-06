@@ -10,8 +10,6 @@ using System.Web.Http;
 using System.Net;
 using Microsoft.Extensions.Primitives;
 using System.Linq;
-using System.Dynamic;
-using System.Collections.Generic;
 
 namespace AddressAnalyzer.Api.Controllers
 {
@@ -20,6 +18,10 @@ namespace AddressAnalyzer.Api.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public class AnalyzeV1Controller : Controller
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:AddressAnalyzer.Api.Controllers.AnalyzeV1Controller"/> class.
+        /// </summary>
+        /// <param name="config">Config.</param>
         public AnalyzeV1Controller(IConfiguration config)
         {
             Config = config;
@@ -27,6 +29,12 @@ namespace AddressAnalyzer.Api.Controllers
 
         private IConfiguration Config { get; }
 
+        /// <summary>
+        /// Gets the data for the given address by querying
+        /// the Ping, GeoIP, and RDAP endpoints by default.
+        /// </summary>
+        /// <returns>The aggregated data.</returns>
+        /// <param name="address">Address to query.</param>
         [HttpGet("{address}")]
         public async Task<dynamic> Get(string address)
         {
@@ -37,6 +45,13 @@ namespace AddressAnalyzer.Api.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Gets the data for the given address by querying
+        /// the services presented in the service list.
+        /// </summary>
+        /// <returns>The aggregated data.</returns>
+        /// <param name="servicelist">The services to utilize for the query.</param>
+        /// <param name="address">Address to query.</param>
         [HttpGet("{servicelist}/{address}")]
         public async Task<dynamic> Get(string servicelist, string address)
         {
@@ -47,7 +62,9 @@ namespace AddressAnalyzer.Api.Controllers
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
             }
 
-            string[] servicesToQuery = servicelist.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            var servicesToQuery = servicelist
+                .Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                .Distinct();
 
             AnalysisResult result = new AnalysisResult();
 
@@ -76,6 +93,11 @@ namespace AddressAnalyzer.Api.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Gets the Geo IP information from the Geo IP endpoint.
+        /// </summary>
+        /// <returns>The geo ip data.</returns>
+        /// <param name="address">Address to query.</param>
         private async Task<GeoIpAnalysisResult> GetGeoIpDataAsync(string address)
         {
             string geoIpApiUrl = Config.GetValue<string>("geoIpApiUrl");
@@ -87,6 +109,11 @@ namespace AddressAnalyzer.Api.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Gets the Ping information from the Ping endpoint.
+        /// </summary>
+        /// <returns>The ping data.</returns>
+        /// <param name="address">Address to query.</param>
         private async Task<PingAnalysisResult> GetPingDataAsync(string address)
         {
             string pingApiUrl = Config.GetValue<string>("pingApiUrl");
@@ -98,6 +125,11 @@ namespace AddressAnalyzer.Api.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Gets the Reverse DNS information from the Reverse DNS endpoint.
+        /// </summary>
+        /// <returns>The reverse dns data.</returns>
+        /// <param name="address">Address to query.</param>
         private async Task<ReverseDnsAnalysisResult> GetReverseDnsDataAsync(string address)
         {
             string reverseDnsApiUrl = Config.GetValue<string>("reverseDnsApiUrl");
@@ -109,18 +141,28 @@ namespace AddressAnalyzer.Api.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Gets the Virus Total information from the Virus Total endpoint.
+        /// </summary>
+        /// <returns>The Virus Total data.</returns>
+        /// <param name="address">Address to query.</param>
         private async Task<VirusTotalAnalysisResult> GetVirusTotalDataAsync(string address)
         {
             string virusTotalApiUrl = Config.GetValue<string>("virusTotalApiUrl");
-            StringValues virusTotalApiKeyValues;
             string virusTotalApiKey = string.Empty;
-            
-            Request.Headers.TryGetValue("X-VT-Key", out virusTotalApiKeyValues);
+
+            Request.Headers.TryGetValue("X-VT-Key", out StringValues virusTotalApiKeyValues);
 
             if (virusTotalApiKeyValues.Count == 1) {
                 virusTotalApiKey = virusTotalApiKeyValues.FirstOrDefault();
             }
-            
+            else
+            {
+                // Don't even bother to query since we don't
+                // have an API key.
+                return null;
+            }
+
             Uri virusTotalAnalyzeRoute = new Uri($"{virusTotalApiUrl}/api/v1/analyze/{virusTotalApiKey}/{address}");
 
             VirusTotalWorker virusTotalWorker = new VirusTotalWorker(virusTotalAnalyzeRoute);
@@ -129,6 +171,11 @@ namespace AddressAnalyzer.Api.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Gets the RDAP information from the RDAP endpoint.
+        /// </summary>
+        /// <returns>The rdap data.</returns>
+        /// <param name="address">Address to query.</param>
         private async Task<RdapAnalysisResult> GetRdapDataAsync(string address)
         {
             string rdapApiUrl = Config.GetValue<string>("rdapApiUrl");
