@@ -7,4 +7,4 @@ dotnet ./publish/AddressAnalyzer.Ping.Api.dll &
 dotnet ./publish/AddressAnalyzer.Rdap.Api.dll &
 dotnet ./publish/AddressAnalyzer.ReverseDns.Api.dll &
 dotnet ./publish/AddressAnalyzer.VirusTotal.Api.dll &
-dotnet ./publish/AddressAnalyzer.Api.dll &
+dotnet ./publish/AddressAnalyzer.Api.dll
