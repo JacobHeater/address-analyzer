@@ -1,7 +1,6 @@
-﻿using System.IO;
+﻿using System;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 
 namespace AddressAnalyzer.Api
 {
@@ -14,13 +13,15 @@ namespace AddressAnalyzer.Api
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false)
-                .Build();
-
             var host = WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>();
+
+            string PORT = Environment.GetEnvironmentVariable("PORT");
+
+            if (!string.IsNullOrWhiteSpace(PORT))
+            {
+                host.UseUrls($"http://0.0.0.0:{PORT}/");
+            }
 
             return host;
         }
