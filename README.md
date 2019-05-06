@@ -106,3 +106,24 @@ dotnet test
 #### Test from Visual Studio
 
 You can run Unit Tests from the VS GUI.
+
+## Running the App in Docker
+
+To run the app in docker, you can run the
+following commands.
+
+### Build the Docker Image
+
+```shell
+docker build -t <your tag name> .
+```
+
+### Run the Docker Image
+
+```shell
+docker run -p 8080:80 <your tag name>
+```
+
+After you've run the image, you can now
+open a browser, or a Postman session, and
+navigate to `http://localhost:8080/api/v1/heartbeat`.
