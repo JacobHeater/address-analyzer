@@ -8,6 +8,10 @@ using System;
 using AddressAnalyzer.Common.Validation;
 using System.Web.Http;
 using System.Net;
+using Microsoft.Extensions.Primitives;
+using System.Linq;
+using System.Dynamic;
+using System.Collections.Generic;
 
 namespace AddressAnalyzer.Api.Controllers
 {
@@ -24,15 +28,17 @@ namespace AddressAnalyzer.Api.Controllers
         private IConfiguration Config { get; }
 
         [HttpGet("{address}")]
-        public async Task<AnalysisResult> Get(string address)
+        public async Task<dynamic> Get(string address)
         {
             this.ValidateAddressInput(address);
 
-            return await Get("ping,geo,rdap", address);
+            AnalysisResult result = await Get("ping,geo,rdap", address);
+
+            return result;
         }
 
         [HttpGet("{servicelist}/{address}")]
-        public async Task<AnalysisResult> Get(string servicelist, string address)
+        public async Task<dynamic> Get(string servicelist, string address)
         {
             this.ValidateAddressInput(address);
 
@@ -106,7 +112,15 @@ namespace AddressAnalyzer.Api.Controllers
         private async Task<VirusTotalAnalysisResult> GetVirusTotalDataAsync(string address)
         {
             string virusTotalApiUrl = Config.GetValue<string>("virusTotalApiUrl");
-            string virusTotalApiKey = Config.GetValue<string>("virusTotalKey");
+            StringValues virusTotalApiKeyValues;
+            string virusTotalApiKey = string.Empty;
+            
+            Request.Headers.TryGetValue("X-VT-Key", out virusTotalApiKeyValues);
+
+            if (virusTotalApiKeyValues.Count == 1) {
+                virusTotalApiKey = virusTotalApiKeyValues.FirstOrDefault();
+            }
+            
             Uri virusTotalAnalyzeRoute = new Uri($"{virusTotalApiUrl}/api/v1/analyze/{virusTotalApiKey}/{address}");
 
             VirusTotalWorker virusTotalWorker = new VirusTotalWorker(virusTotalAnalyzeRoute);

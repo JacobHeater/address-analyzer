@@ -332,3 +332,6 @@ ASALocalRun/
 # Customizations Here
 
 */appsettings.Development.json
+nohup.out
+out
+*/out

@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/JacobHeater/address-analyzer.svg?branch=master)](https://travis-ci.org/JacobHeater/address-analyzer)
-
 # Address Analyzer
+
+[![Build Status](https://travis-ci.org/JacobHeater/address-analyzer.svg?branch=master)](https://travis-ci.org/JacobHeater/address-analyzer)
 
 Address Analyzer provides a simple API to query multiple
 endpoints to retrieve information about a domain, or an
@@ -31,10 +31,9 @@ There are a few endpoints that are of note.
    the default set of services.
 
    **Parameter** - `address`
-       
-    - Type `{string}` - IP Address or Domain
-      
-      - Example: `8.8.8.8` or `google.com`
+
+  - Type `{string}` - IP Address or Domain
+    - Example: `8.8.8.8` or `google.com`
 
 - `GET /api/v1/analyze/{servicelist}/{address}` ->
    Returns JSON from the specified set of services
@@ -42,23 +41,20 @@ There are a few endpoints that are of note.
 
    **Parameter** - `servicelist`
 
-   - Type `{string}` - Comma separated list of strings
-
-     - Accepatable Values:
-    
-       - `vt`   - Virus Total
-       - `rdap` - RDAP
-       - `rdns` - Reverse DNS
-       - `ping` - Ping
-       - `geo`  - GeoIP
+  - Type `{string}` - Comma separated list of strings
+    - Accepatable Values:
+      - `vt`   - Virus Total
+      - `rdap` - RDAP
+      - `rdns` - Reverse DNS
+      - `ping` - Ping
+      - `geo`  - GeoIP
 
     - Example: `vt,rdap,geo`
 
   **Parameter** - `address`
-       
-    - Type `{string}` - IP Address or Domain
-      
-      - Example: `8.8.8.8` or `google.com`
+
+  - Type `{string}` - IP Address or Domain
+    - Example: `8.8.8.8` or `google.com`
 
 ## Running the App
 
@@ -69,7 +65,7 @@ There are a few endpoints that are of note.
 
 ### Building the App
 
-#### From the Terminal
+#### Run from the Terminal
 
 ```shell
 cd <project root dir>
@@ -83,7 +79,7 @@ You can build from the VS GUI.
 
 ### Testing the Code
 
-#### From the Terminal
+#### Test from the Terminal
 
 ```shell
 cd <project root dir>
@@ -91,6 +87,6 @@ cd <project root dir>
 dotnet test
 ```
 
-#### From Visual Studio
+#### Test from Visual Studio
 
 You can run Unit Tests from the VS GUI.
