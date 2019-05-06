@@ -40,7 +40,7 @@ namespace AddressAnalyzer.Api.Controllers
         {
             this.ValidateAddressInput(address);
 
-            AnalysisResult result = await Get("ping,geo,rdap", address);
+            AnalysisResult result = await Get("ping,rdap", address);
 
             return result;
         }
