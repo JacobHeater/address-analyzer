@@ -11,6 +11,7 @@ using System.Net;
 using Microsoft.Extensions.Primitives;
 using System.Linq;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Collections.Generic;
 
 namespace AddressAnalyzer.Api.Controllers
 {
@@ -72,31 +73,83 @@ namespace AddressAnalyzer.Api.Controllers
                 .Select(s => s.Trim())
                 .Distinct();
 
+            AnalysisResult result = await RunQueriesInParallelAndBuildResult(address, servicesToQuery);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Runs the queries in parallel and builds the analysis result.
+        /// </summary>
+        /// <returns>The aggregated result.</returns>
+        /// <param name="address">Address to lookup.</param>
+        /// <param name="servicesToQuery">Services to query.</param>
+        private async Task<AnalysisResult> RunQueriesInParallelAndBuildResult(string address, IEnumerable<string> servicesToQuery)
+        {
             AnalysisResult result = new AnalysisResult();
 
-            foreach (string service in servicesToQuery)
+            Dictionary<string, dynamic> parallelTasks = RunQueriesInParallel(address, servicesToQuery);
+
+            foreach (var task in parallelTasks)
             {
-                switch(service)
+                dynamic value = await task.Value;
+
+                switch (task.Key)
                 {
                     case "vt":
-                        result.VirusTotal = await GetVirusTotalDataAsync(address);
+                        result.VirusTotal = value;
                         break;
                     case "rdap":
-                        result.Rdap = await GetRdapDataAsync(address);
+                        result.Rdap = value;
                         break;
                     case "rdns":
-                        result.ReverseDns = await GetReverseDnsDataAsync(address);
+                        result.ReverseDns = value;
                         break;
                     case "ping":
-                        result.Ping = await GetPingDataAsync(address);
+                        result.Ping = value;
                         break;
                     case "geo":
-                        result.GeoIp = await GetGeoIpDataAsync(address);
+                        result.GeoIp = value;
                         break;
                 }
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Runs the service queries in parallel.
+        /// </summary>
+        /// <returns>The queries as Tasks.</returns>
+        /// <param name="address">Address to look up.</param>
+        /// <param name="servicesToQuery">Services to query.</param>
+        private Dictionary<string, dynamic> RunQueriesInParallel(string address, IEnumerable<string> servicesToQuery)
+        {
+            Dictionary<string, dynamic> parallelTasks = new Dictionary<string, dynamic>();
+
+            foreach (string service in servicesToQuery)
+            {
+                switch (service)
+                {
+                    case "vt":
+                        parallelTasks.Add(service, GetVirusTotalDataAsync(address));
+                        break;
+                    case "rdap":
+                        parallelTasks.Add(service, GetRdapDataAsync(address));
+                        break;
+                    case "rdns":
+                        parallelTasks.Add(service, GetReverseDnsDataAsync(address));
+                        break;
+                    case "ping":
+                        parallelTasks.Add(service, GetPingDataAsync(address));
+                        break;
+                    case "geo":
+                        parallelTasks.Add(service, GetGeoIpDataAsync(address));
+                        break;
+                }
+            }
+
+            return parallelTasks;
         }
 
         /// <summary>
@@ -159,7 +212,8 @@ namespace AddressAnalyzer.Api.Controllers
 
             Request.Headers.TryGetValue("X-VT-Key", out StringValues virusTotalApiKeyValues);
 
-            if (virusTotalApiKeyValues.Count == 1) {
+            if (virusTotalApiKeyValues.Count == 1)
+            {
                 virusTotalApiKey = virusTotalApiKeyValues.FirstOrDefault();
             }
             else
