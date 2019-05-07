@@ -13,8 +13,7 @@ aggregating this data, and returning it to the caller
 in JSON format. The API allows for selecting a set of
 services that the caller wants to retrieve data from,
 or a simple `HTTP GET` endpoint that will retrieve
-data from a predefined set of services &mdash; Ping,
-GeoIP, and RDAP.
+data from a predefined set of services &mdash; Ping and RDAP.
 
 ## API Usage
 
