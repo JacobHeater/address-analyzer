@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using AddressAnalyzer.Common;
 using AddressAnalyzer.GeoIp.Api.Providers;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -12,9 +13,9 @@ namespace AddressAnalyzer.GeoIp.Api.Tests
         public async Task GeoIpClinetReturnsDataAsJsonWhenJsonProviderRequested()
         {
             GeoIpClient<IPApiJsonDataProvider> client = new GeoIpClient<IPApiJsonDataProvider>();
-            string data = await client.GetDataAsync("google.com");
+            string data = await client.GetDataAsync("8.8.8.8/json");
 
-            Assert.IsFalse(string.IsNullOrWhiteSpace(data));
+            Assert.IsFalse(data.Contains(Constants.ERROR_PREFIX));
 
             try
             {

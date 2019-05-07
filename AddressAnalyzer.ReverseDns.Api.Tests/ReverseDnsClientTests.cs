@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AddressAnalyzer.Common;
 using AddressAnalyzer.Common.DataContracts;
 using AddressAnalyzer.ReverseDns.Api.Providers;
 using Newtonsoft.Json;
@@ -39,7 +40,7 @@ namespace AddressAnalyzer.ReverseDns.Api.Tests
 
             string result = await client.GetDataAsync("!@#$$%");
 
-            Assert.AreEqual(string.Empty, result);
+            Assert.True(result.Contains(Constants.ERROR_PREFIX));
         }
 
         [Test]

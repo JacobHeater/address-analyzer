@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AddressAnalyzer.Common;
 using AddressAnalyzer.VirusTotal.Api.Providers;
 using NUnit.Framework;
 
@@ -23,14 +24,14 @@ namespace AddressAnalyzer.VirusTotal.Api.Tests
 
             string domainReport = await domainClient.GetDataAsync(parameters);
 
-            Assert.AreEqual(string.Empty, domainReport);
+            Assert.True(domainReport.Contains(Constants.ERROR_PREFIX));
 
             parameters.Remove("domain");
             parameters.Add("ip", "8.8.8.8");
 
             string ipReport = await ipClient.GetDataAsync(parameters);
 
-            Assert.AreEqual(string.Empty, ipReport);
+            Assert.True(ipReport.Contains(Constants.ERROR_PREFIX));
         }
     }
 }

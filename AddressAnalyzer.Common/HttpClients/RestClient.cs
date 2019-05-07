@@ -20,28 +20,9 @@ namespace AddressAnalyzer.Common.HttpClients
         /// </summary>
         /// <returns>The string content from the request.</returns>
         /// <param name="uri">The resource to call.</param>
-        public async Task<string> GetAsync(Uri uri)
+        public Task<string> GetAsync(Uri uri)
         {
-            if (uri == null)
-            {
-                throw new ArgumentNullException(nameof(uri));
-            }
-
-            try
-            {
-                IRestResponse response = await _restClient.ExecuteGetTaskAsync(new RestRequest(uri.ToString()));
-
-                if (IsResponseValid(response))
-                {
-                    return response.Content;
-                }
-
-                return string.Empty;
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
+            return GetAsync(uri, null);
         }
 
         /// <summary>
@@ -56,11 +37,6 @@ namespace AddressAnalyzer.Common.HttpClients
             if (uri == null)
             {
                 throw new ArgumentNullException(nameof(uri));
-            }
-
-            if (parameters == null)
-            {
-                throw new ArgumentNullException(nameof(parameters));
             }
 
             try
@@ -79,7 +55,12 @@ namespace AddressAnalyzer.Common.HttpClients
                     return response.Content;
                 }
 
-                return string.Empty;
+                if (response.StatusCode == 0)
+                {
+                    return Constants.SERVER_OFFLINE;
+                }
+
+                return $"{Constants.ERROR_PREFIX}{response.ErrorMessage}";
             }
             catch (Exception)
             {
@@ -123,7 +104,12 @@ namespace AddressAnalyzer.Common.HttpClients
                     return response.Content;
                 }
 
-                return string.Empty;
+                if (response.StatusCode == 0)
+                {
+                    return Constants.SERVER_OFFLINE;
+                }
+
+                return $"{Constants.ERROR_PREFIX}{response.ErrorMessage}";
             }
             catch (Exception)
             {

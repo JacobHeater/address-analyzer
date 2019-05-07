@@ -32,12 +32,13 @@ namespace AddressAnalyzer.Common.Workers
         {
             string apiResult = await _restClient.GetAsync(SourceUrl);
 
-            if (string.IsNullOrWhiteSpace(apiResult))
+            if (apiResult == Constants.SERVER_OFFLINE || apiResult.Contains(Constants.ERROR_PREFIX))
             {
-                ServiceAnalysisResultBase result = (ServiceAnalysisResultBase)Activator.CreateInstance<T>();
+                ServiceAnalysisResultBase result = Activator.CreateInstance<T>();
 
                 result.IsSuccessful = false;
                 result.ResultText = string.Empty;
+                result.FailureReasons.Add(apiResult);
 
                 return result as T;
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using AddressAnalyzer.Common;
 using AddressAnalyzer.Rdap.Api.Providers;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -39,7 +40,7 @@ namespace AddressAnalyzer.Rdap.Api.Tests
 
             string data = await client.GetDataAsync("8.8.8.8");
 
-            Assert.True(string.IsNullOrWhiteSpace(data));
+            Assert.True(data.Contains(Constants.ERROR_PREFIX));
         }
 
         [Test]
@@ -72,7 +73,7 @@ namespace AddressAnalyzer.Rdap.Api.Tests
 
             string data = await client.GetDataAsync("google.com");
 
-            Assert.True(string.IsNullOrWhiteSpace(data));
+            Assert.True(data.Contains(Constants.ERROR_PREFIX));
         }
 
     }

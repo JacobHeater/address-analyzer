@@ -10,9 +10,12 @@ using System.Web.Http;
 using System.Net;
 using Microsoft.Extensions.Primitives;
 using System.Linq;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace AddressAnalyzer.Api.Controllers
 {
+    [ProducesResponseType((int)HttpStatusCode.OK)]
+    [ProducesResponseType((int)HttpStatusCode.BadRequest)]
     [ControllerName("Analyze")]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -36,7 +39,8 @@ namespace AddressAnalyzer.Api.Controllers
         /// <returns>The aggregated data.</returns>
         /// <param name="address">Address to query.</param>
         [HttpGet("{address}")]
-        public async Task<dynamic> Get(string address)
+        [SwaggerOperation(Summary = "Gets information about the provided address from the default Ping and RDAP services.", Produces = new string[] { "application/json" })]
+        public async Task<AnalysisResult> Get(string address)
         {
             this.ValidateAddressInput(address);
 
@@ -53,7 +57,8 @@ namespace AddressAnalyzer.Api.Controllers
         /// <param name="servicelist">The services to utilize for the query.</param>
         /// <param name="address">Address to query.</param>
         [HttpGet("{servicelist}/{address}")]
-        public async Task<dynamic> Get(string servicelist, string address)
+        [SwaggerOperation(Summary = "Gets information about the provided address from the supplied list of services to query.", Produces = new string[] { "application/json" })]
+        public async Task<AnalysisResult> Get(string servicelist, string address)
         {
             this.ValidateAddressInput(address);
 
@@ -64,6 +69,7 @@ namespace AddressAnalyzer.Api.Controllers
 
             var servicesToQuery = servicelist
                 .Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(s => s.Trim())
                 .Distinct();
 
             AnalysisResult result = new AnalysisResult();
