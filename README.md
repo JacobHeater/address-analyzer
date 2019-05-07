@@ -127,3 +127,17 @@ docker run -p 8080:80 <your tag name>
 After you've run the image, you can now
 open a browser, or a Postman session, and
 navigate to `http://localhost:8080/api/v1/heartbeat`.
+
+## Swagger
+
+You can find the Swagger specification, and the
+hosted application in a
+[Heroku application](https://address-analyzer.herokuapp.com/swagger).
+
+## Heroku
+
+This application runs on an autodeployment
+process using the Travis CI pipeline that is
+configured for this project. Heroku will
+automatically deploy the latest code from `master`
+when a pipeline has succeeded.
